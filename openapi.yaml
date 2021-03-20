@@ -1,0 +1,187 @@
+openapi: 3.0.3
+info:
+  title: Kotal API
+  description: Kotal API used by Kotal dashboard and SDKs to create and manage Blockchain infrastructure
+  version: 'v1.0'
+  contact:
+    name: Mostafa Farghaly
+    email: mostafa@kotal.co
+servers:
+  - url: http://localhost:3000/v1/
+    description: Localhost
+paths:
+  /ethereum/nodes:
+    post:
+      tags:
+        - Ethereum
+      summary: Create Ethereum node
+      operationId: createEthereumNode
+      description: create a new Ethereum node from the given node spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EthereumNode"
+      responses:
+        201:
+          description: node has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    $ref: "#/components/schemas/EthereumNode"
+    get:
+      tags:
+        - Ethereum
+      summary: List all Etherem nodes
+      operationId: listEthereumNode
+      description: List all Ethereum nodes
+      responses:
+        200:
+          description: all Ethereum nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/EthereumNode"
+
+  /ethereum/nodes/{nodeName}:
+    get:
+      tags:
+        - Ethereum
+      summary: Get Etherem node by name
+      operationId: getEthereumNode
+      description: get Ethereum node by a given name
+      parameters:
+        - name: nodeName
+          description: Node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Node by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node: 
+                    $ref: "#/components/schemas/EthereumNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+    delete:
+      tags:
+        - Ethereum
+      summary: Delete Etherem node by name
+      operationId: deleteEthereumNode
+      description: Delete Ethereum node by a given name
+      parameters:
+        - name: nodeName
+          description: Node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        201:
+          description: Node by name has been deleted
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+    put:
+      tags:
+        - Ethereum
+      summary: Update Etherem node by name
+      operationId: updateEthereumNode
+      description: Update Ethereum node mutable fields by a given name
+      parameters:
+        - name: nodeName
+          description: Node name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MutableEthereumNode"
+      responses:
+        200:
+          description: Node has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node: 
+                    $ref: "#/components/schemas/EthereumNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+
+tags:
+  - name: Ethereum
+  - name: Ethereum 2.0
+  - name: IPFS
+  - name: Filecoin
+
+components:
+  schemas:
+    EthereumNode:
+      description: Ethereum 1 Node
+      type: object
+      required:
+        - name
+        - network
+      properties:
+        name: 
+          type: string
+          example: my-node
+          description: Ethereum node name
+        network:
+          type: string
+          example: rinkeby
+          description: Ethereum network to join
+        client:
+          description: Ethereum 1 client
+          type: string
+          default: besu
+          example: geth
+          enum:
+            - besu
+            - geth
+            - parity
+            - nethermind
+
+    MutableEthereumNode:
+      description: Mutable Ethereum 1 Node fields
+      type: object
+      properties:
+        client:
+          description: Ethereum client
+          type: string
+          default: besu
+          example: geth
+          enum:
+            - besu
+            - geth
+            - parity
+            - nethermind
+
+    
