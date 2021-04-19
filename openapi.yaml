@@ -228,6 +228,41 @@ paths:
           description: path parameter {peerName} is missing
         404:
           description: Peer by name {peerName} is not found
+
+    put:
+      tags:
+        - IPFS
+      summary: Update IPFS peer by name
+      operationId: updateIPFSPeer
+      description: Update IPFS peer mutable fields by a given name
+      parameters:
+        - name: peerName
+          description: Peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MutableIPFSPeer"
+      responses:
+        200:
+          description: Peer has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  peer:
+                    $ref: "#/components/schemas/IPFSPeer"
+        400:
+          description: path parameter {peerName} is missing
+        404:
+          description: Peer by name {peerName} is not found
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
@@ -308,15 +343,7 @@ components:
           default: "0.0.0.0"
           description: API server host
         routing:
-          type: string
-          example: "dhtclient"
-          default: "dht"
-          description: Content routing mechanism
-          enum:
-            - none
-            - dht
-            - dhtclient
-            - dhtserver
+          $ref: "#/components/schemas/IPFSRouting"
         initProfiles:
           type: array
           description: inital configuration profiles
@@ -324,6 +351,44 @@ components:
             - default-datastore
           items:
             $ref: "#/components/schemas/IPFSConfigurationProfile"
+
+    MutableIPFSPeer:
+      description: Mutable IPFS peer fields
+      type: object
+      properties:
+        apiPort:
+          type: number
+          example: 3000
+          default: 5001
+          description: API server port
+        apiHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: API server host
+        gatewayPort:
+          type: number
+          example: 5000
+          default: 8080
+          description: local IPFS gateway server port
+        gatewayHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: API server host
+        routing:
+          $ref: "#/components/schemas/IPFSRouting"
+
+    IPFSRouting:
+      type: string
+      example: "dhtclient"
+      default: "dht"
+      description: Content routing mechanism
+      enum:
+        - none
+        - dht
+        - dhtclient
+        - dhtserver
 
     IPFSConfigurationProfile:
       type: string
