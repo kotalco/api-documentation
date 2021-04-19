@@ -179,6 +179,35 @@ paths:
                     items:
                       $ref: "#/components/schemas/IPFSPeer"
 
+  /ipfs/peers/{peerName}:
+    get:
+      tags:
+        - IPFS
+      summary: Get IPFS peer by name
+      operationId: getIPFSPeer
+      description: get IPFS peer by name
+      parameters:
+        - name: peerName
+          description: peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: IPFS peer by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  peer:
+                    $ref: "#/components/schemas/IPFSPeer"
+        400:
+          description: path parameter {peerName} is missing
+        404:
+          description: Node by name {peerName} is not found
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
