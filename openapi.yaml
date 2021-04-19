@@ -160,6 +160,25 @@ paths:
                     type: object
                     $ref: "#/components/schemas/IPFSPeer"
 
+    get:
+      tags:
+        - IPFS
+      summary: List all IPFS peers
+      operationId: listIPFSPeers
+      description: list all IPFS peers
+      responses:
+        200:
+          description: all IPFS peers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  peers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/IPFSPeer"
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
