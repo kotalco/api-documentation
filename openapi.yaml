@@ -95,7 +95,7 @@ paths:
           schema:
             type: string
       responses:
-        201:
+        204:
           description: Node by name has been deleted
         400:
           description: path parameter {nodeName} is missing
@@ -208,6 +208,26 @@ paths:
         404:
           description: Node by name {peerName} is not found
 
+    delete:
+      tags:
+        - IPFS
+      summary: Delete IPFS peer by name
+      operationId: deleteIPFSPeer
+      description: Delete IPFS peer by a given name
+      parameters:
+        - name: peerName
+          description: peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Peer by name has been deleted
+        400:
+          description: path parameter {peerName} is missing
+        404:
+          description: Peer by name {peerName} is not found
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
