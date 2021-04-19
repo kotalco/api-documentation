@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Kotal API
   description: Kotal API used by Kotal dashboard and SDKs to create and manage Blockchain infrastructure
-  version: 'v1.0'
+  version: "v1.0"
   contact:
     name: Mostafa Farghaly
     email: mostafa@kotal.co
@@ -75,7 +75,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  node: 
+                  node:
                     $ref: "#/components/schemas/EthereumNode"
         400:
           description: path parameter {nodeName} is missing
@@ -128,12 +128,37 @@ paths:
               schema:
                 type: object
                 properties:
-                  node: 
+                  node:
                     $ref: "#/components/schemas/EthereumNode"
         400:
           description: path parameter {nodeName} is missing
         404:
           description: Node by name {nodeName} is not found
+
+  /ipfs/peers:
+    post:
+      tags:
+        - IPFS
+      summary: Create IPFS peer
+      operationId: createIPFSPeer
+      description: create IPFS peer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IPFSPeer"
+      responses:
+        201:
+          description: peer has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  peer:
+                    type: object
+                    $ref: "#/components/schemas/IPFSPeer"
 
 tags:
   - name: Ethereum
@@ -150,7 +175,7 @@ components:
         - name
         - network
       properties:
-        name: 
+        name:
           type: string
           example: my-node
           description: Ethereum node name
