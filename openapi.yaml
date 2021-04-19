@@ -184,4 +184,64 @@ components:
             - parity
             - nethermind
 
-    
+    IPFSPeer:
+      description: IPFS peer
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: my-peer
+          description: IPFS peer name
+        apiPort:
+          type: number
+          example: 3000
+          default: 5001
+          description: API server port
+        apiHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: API server host
+        gatewayPort:
+          type: number
+          example: 5000
+          default: 8080
+          description: local IPFS gateway server port
+        gatewayHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: API server host
+        routing:
+          type: string
+          example: "dhtclient"
+          default: "dht"
+          description: Content routing mechanism
+          enum:
+            - none
+            - dht
+            - dhtclient
+            - dhtserver
+        initProfiles:
+          type: array
+          description: inital configuration profiles
+          default:
+            - default-datastore
+          items:
+            $ref: "#/components/schemas/IPFSConfigurationProfile"
+
+    IPFSConfigurationProfile:
+      type: string
+      description: IPFS configuration profile
+      enum:
+        - server
+        - randomports
+        - default-datastore
+        - local-discovery
+        - test
+        - default-networking
+        - flatfs
+        - badgerds
+        - lowpower
