@@ -344,6 +344,11 @@ components:
           description: API server host
         routing:
           $ref: "#/components/schemas/IPFSRouting"
+        profiles:
+          type: array
+          description: configuration profiles
+          items:
+            $ref: "#/components/schemas/IPFSConfigurationProfile"
         initProfiles:
           type: array
           description: inital configuration profiles
@@ -378,6 +383,11 @@ components:
           description: API server host
         routing:
           $ref: "#/components/schemas/IPFSRouting"
+        profiles:
+          type: array
+          description: configuration profiles
+          items:
+            $ref: "#/components/schemas/IPFSConfigurationProfile"
 
     IPFSRouting:
       type: string
