@@ -267,7 +267,7 @@ paths:
     post:
       tags:
         - Ethereum 2.0
-      summary: Create Ethereum 2.0 beacon node
+      summary: Create beacon node
       operationId: createEthereum2BeaconNode
       description: create a new Ethereum 2.0 beacon node from the given beacon node spec
       requestBody:
@@ -288,6 +288,24 @@ paths:
                     type: object
                     $ref: "#/components/schemas/Ethereum2BeaconNode"
 
+    get:
+      tags:
+        - Ethereum 2.0
+      summary: List all beacon nodes
+      operationId: listEthereum2BeaconNodes
+      description: List all Ethereum 2.0 beacon nodes
+      responses:
+        200:
+          description: all Ethereum 2.0 beacon nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beaconnodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Ethereum2BeaconNode"
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
