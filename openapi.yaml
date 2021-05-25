@@ -306,6 +306,83 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Ethereum2BeaconNode"
+
+  /ethereum2/beaconnodes/{nodeName}:
+    get:
+      tags:
+        - Ethereum 2.0
+      summary: Get beacon node by name
+      operationId: getEthereum2BeaconNode
+      description: get Ethereum 2.0 beacon node by a given name
+      parameters:
+        - name: nodeName
+          description: Beacon node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Beacon node by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beaconnode:
+                    $ref: "#/components/schemas/Ethereum2BeaconNode"
+        404:
+          description: Beacon node by name {nodeName} is not found
+    delete:
+      tags:
+        - Ethereum 2.0
+      summary: Delete beacon node by name
+      operationId: deleteEthereum2BeaconNode
+      description: Delete Ethereum 2.0 beacon node by a given name
+      parameters:
+        - name: nodeName
+          description: Beacon node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Beacon node by name has been deleted
+        404:
+          description: Beacon node by name {nodeName} is not found
+    put:
+      tags:
+        - Ethereum 2.0
+      summary: Update beacon node by name
+      operationId: updateEthereum2BeaconNode
+      description: Update Ethereum 2.0 beacon node mutable fields by a given name
+      parameters:
+        - name: nodeName
+          description: Beacon node name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MutableEthereum2BeaconNode"
+      responses:
+        200:
+          description: Beacon node has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  beaconnode:
+                    $ref: "#/components/schemas/Ethereum2BeaconNode"
+        404:
+          description: Beacon node by name {nodeName} is not found
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
@@ -473,6 +550,99 @@ components:
           type: string
           example: "mainnet"
           description: Beacon chain network name
+        client:
+          type: string
+          example: "prysm"
+          default: "teku"
+          enum:
+            - "teku"
+            - "prysm"
+            - "lighthouse"
+            - "nimbus"
+          description: Beacon node client
+        eth1Endpoints:
+          type: array
+          description: Ethereum node JSON-RPC endpoints
+          items:
+            type: string
+            description: Ethereum JSON-RPC endpoint
+          example:
+            - "my-ethereum-node:8545"
+        rest:
+          type: boolean
+          example: true
+          default: false
+          description: Enable REST API server
+        restPort:
+          type: number
+          example: 5555
+          default: 5051
+          description: REST API server port
+        restHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: REST API server host
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable JSON-RPC server
+        rpcPort:
+          type: number
+          example: 4444
+          default: 4000
+          description: JSON-RPC server port
+        rpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: JSON-RPC server host
+        grpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable GRPC gateway server
+        grpcPort:
+          type: number
+          example: 3555
+          default: 3500
+          description: GRPC gateway server port
+        grpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: GRPC gateway server host
+        cpu:
+          type: string
+          example: "2"
+          default: "4"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "8"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "8Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "16Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "1Ti"
+          default: "200Gi"
+          description: Disk space required
+
+    MutableEthereum2BeaconNode:
+      description: Ethereum 2.0 beacon node
+      type: object
+      properties:
         client:
           type: string
           example: "prysm"
