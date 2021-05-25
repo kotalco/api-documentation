@@ -263,11 +263,36 @@ paths:
         404:
           description: Peer by name {peerName} is not found
 
+  /ethereum2/beaconnodes:
+    post:
+      tags:
+        - Ethereum 2.0
+      summary: Create Ethereum 2.0 beacon node
+      operationId: createEthereum2BeaconNode
+      description: create a new Ethereum 2.0 beacon node from the given beacon node spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ethereum2BeaconNode"
+      responses:
+        201:
+          description: beacon node has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    $ref: "#/components/schemas/Ethereum2BeaconNode"
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
-  - name: IPFS
   - name: Filecoin
+  - name: IPFS
 
 components:
   schemas:
@@ -413,3 +438,108 @@ components:
         - flatfs
         - badgerds
         - lowpower
+
+    Ethereum2BeaconNode:
+      description: Ethereum 2.0 beacon node
+      type: object
+      required:
+        - name
+        - network
+        - client
+      properties:
+        name:
+          type: string
+          example: "my-beacon"
+          description: Beacon node name
+        network:
+          type: string
+          example: "mainnet"
+          description: Beacon chain network name
+        client:
+          type: string
+          example: "prysm"
+          default: "teku"
+          enum:
+            - "teku"
+            - "prysm"
+            - "lighthouse"
+            - "nimbus"
+          description: Beacon node client
+        eth1Endpoints:
+          type: array
+          description: Ethereum node JSON-RPC endpoints
+          items:
+            type: string
+            description: Ethereum JSON-RPC endpoint
+          example:
+            - "my-ethereum-node:8545"
+        rest:
+          type: boolean
+          example: true
+          default: false
+          description: Enable REST API server
+        restPort:
+          type: number
+          example: 5555
+          default: 5051
+          description: REST API server port
+        restHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: REST API server host
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable JSON-RPC server
+        rpcPort:
+          type: number
+          example: 4444
+          default: 4000
+          description: JSON-RPC server port
+        rpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: JSON-RPC server host
+        grpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable GRPC gateway server
+        grpcPort:
+          type: number
+          example: 3555
+          default: 3500
+          description: GRPC gateway server port
+        grpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: GRPC gateway server host
+        cpu:
+          type: string
+          example: "2"
+          default: "4"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "8"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "8Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "16Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "1Ti"
+          default: "200Gi"
+          description: Disk space required
