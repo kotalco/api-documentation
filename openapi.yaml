@@ -731,3 +731,105 @@ components:
           example: "1Ti"
           default: "200Gi"
           description: Disk space required
+
+    Ethereum2Keystore:
+      description: Ethereum 2.0 validator keystore
+      type: object
+      required:
+        - secretName
+      properties:
+        secretName:
+          type: string
+
+    Ethereum2Validator:
+      description: Ethereum 2.0 validator
+      type: object
+      required:
+        - name
+        - network
+        - client
+        - beaconEndpoints
+        - keystores
+      properties:
+        name:
+          type: string
+          example: "my-validator"
+          description: Validator name
+        network:
+          type: string
+          example: "mainnet"
+          description: Beacon chain network name
+        client:
+          type: string
+          example: "prysm"
+          default: "teku"
+          enum:
+            - "teku"
+            - "prysm"
+            - "lighthouse"
+            - "nimbus"
+          description: Validator client
+        keystores:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ethereum2Keystore"
+        walletPasswordSecretName:
+          description: prysm client wallet password
+          type: string
+        beaconEndpoints:
+          type: array
+          description: Beacon node endpoints
+          items:
+            type: string
+            description: Beacon node endpoint
+          example:
+            - "beacon-node:8545"
+
+    MutableEthereum2Validator:
+      description: Mutable Ethereum 2.0 validator fields
+      type: object
+      properties:
+        graffiti:
+          type: string
+          description: Text to include in proposed blocks
+          default: Powered by Kotal
+        keystores:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ethereum2Keystore"
+        walletPasswordSecretName:
+          description: prysm client wallet password
+          type: string
+        beaconEndpoints:
+          type: array
+          description: Beacon node endpoints
+          items:
+            type: string
+            description: Beacon node endpoint
+          example:
+            - "beacon-node:8545"
+        cpu:
+          type: string
+          example: "2"
+          default: "4"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "8"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "8Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "16Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "1Ti"
+          default: "200Gi"
+          description: Disk space required
