@@ -147,7 +147,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/IPFSPeer"
+              $ref: "#/components/schemas/CreateIPFSPeer"
       responses:
         201:
           description: peer has been created
@@ -247,7 +247,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MutableIPFSPeer"
+              $ref: "#/components/schemas/UpdateIPFSPeer"
       responses:
         200:
           description: Peer has been updated
@@ -555,8 +555,6 @@ components:
     IPFSPeer:
       description: IPFS peer
       type: object
-      required:
-        - name
       properties:
         name:
           type: string
@@ -597,7 +595,25 @@ components:
           items:
             $ref: "#/components/schemas/IPFSConfigurationProfile"
 
-    MutableIPFSPeer:
+    CreateIPFSPeer:
+      description: IPFS peer
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: my-peer
+          description: IPFS peer name
+        initProfiles:
+          type: array
+          description: inital configuration profiles
+          default:
+            - default-datastore
+          items:
+            $ref: "#/components/schemas/IPFSConfigurationProfile"
+
+    UpdateIPFSPeer:
       description: Mutable IPFS peer fields
       type: object
       properties:
