@@ -275,7 +275,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Ethereum2BeaconNode"
+              $ref: "#/components/schemas/CreateEthereum2BeaconNode"
       responses:
         201:
           description: beacon node has been created
@@ -369,7 +369,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MutableEthereum2BeaconNode"
+              $ref: "#/components/schemas/UpdateEthereum2BeaconNode"
       responses:
         200:
           description: Beacon node has been updated
@@ -657,10 +657,6 @@ components:
     Ethereum2BeaconNode:
       description: Ethereum 2.0 beacon node
       type: object
-      required:
-        - name
-        - network
-        - client
       properties:
         name:
           type: string
@@ -759,10 +755,22 @@ components:
           default: "200Gi"
           description: Disk space required
 
-    MutableEthereum2BeaconNode:
+    CreateEthereum2BeaconNode:
       description: Ethereum 2.0 beacon node
       type: object
+      required:
+        - name
+        - network
+        - client
       properties:
+        name:
+          type: string
+          example: "my-beacon"
+          description: Beacon node name
+        network:
+          type: string
+          example: "mainnet"
+          description: Beacon chain network name
         client:
           type: string
           example: "prysm"
@@ -773,6 +781,19 @@ components:
             - "lighthouse"
             - "nimbus"
           description: Beacon node client
+        eth1Endpoints:
+          type: array
+          description: Ethereum node JSON-RPC endpoints
+          items:
+            type: string
+            description: Ethereum JSON-RPC endpoint
+          example:
+            - "my-ethereum-node:8545"
+
+    UpdateEthereum2BeaconNode:
+      description: Ethereum 2.0 beacon node
+      type: object
+      properties:
         eth1Endpoints:
           type: array
           description: Ethereum node JSON-RPC endpoints
