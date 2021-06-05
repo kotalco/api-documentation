@@ -683,6 +683,170 @@ components:
         - badgerds
         - lowpower
 
+    IPFSClusterPeer:
+      description: IPFS cluster peer
+      type: object
+      properties:
+        name:
+          type: string
+          description: cluster peer name
+          example: my-cluster-peer
+        consensus:
+          type: string
+          description: cluster consensus algorithm
+          example: raft
+          default: crdt
+          enum:
+            - crdt
+            - raft
+        clusterSecretName:
+          type: string
+          description: k8s secret holding cluster secret
+          example: my-cluster-secret
+        peerEndpoint:
+          type: string
+          description: ipfs peer HTTP API endpoint
+          example: /dns4/my-ipfs-peer/tcp/5001
+        id:
+          type: string
+          description: cluster peer id
+          example: 12D3KooWLGxJgETUVhkeXmmertpEJotW6tJ5r8zunPTGPYJr8vgY
+        privatekeySecretName:
+          type: string
+          description: k8s secret name holding private key from which cluster peer id is derived
+          example: my-cluster-peer-privatekey
+        trustedPeers:
+          type: array
+          description: trusted peers that can change cluster pinset in CRDT-consensus clusters
+          items:
+            type: string
+            description: cluster peer id
+            example: 12D3KooWQ9yZnqowEDme3gSgS45KY9ZoEmAiGYRxusdEaqtFa9pr
+        bootstrapPeers:
+          type: array
+          description: cluster peers to connect to at startup
+          items:
+            type: string
+            description: cluster peer multiaddress
+            example: /dns4/your-cluster-peer/tcp/9096/ipfs/QmcQ5XvrSQ4DouNkQyQtEoLczbMr6D9bSenGy6WQUCQUBt
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
+
+    CreateIPFSClusterPeer:
+      description: IPFS cluster peer
+      type: object
+      required:
+        - name
+        - clusterSecretName
+        - peerEndpoint
+      properties:
+        name:
+          type: string
+          description: cluster peer name
+          example: my-cluster-peer
+        consensus:
+          type: string
+          description: cluster consensus algorithm
+          example: raft
+          default: crdt
+          enum:
+            - crdt
+            - raft
+        clusterSecretName:
+          type: string
+          description: k8s secret holding cluster secret
+          example: my-cluster-secret
+        peerEndpoint:
+          type: string
+          description: ipfs peer HTTP API endpoint
+          example: /dns4/my-ipfs-peer/tcp/5001
+        id:
+          type: string
+          description: cluster peer id
+          example: 12D3KooWLGxJgETUVhkeXmmertpEJotW6tJ5r8zunPTGPYJr8vgY
+        privatekeySecretName:
+          type: string
+          description: k8s secret name holding private key from which cluster peer id is derived
+          example: my-cluster-peer-privatekey
+        trustedPeers:
+          type: array
+          description: trusted peers that can change cluster pinset in CRDT-consensus clusters
+          items:
+            type: string
+            description: cluster peer id
+            example: 12D3KooWQ9yZnqowEDme3gSgS45KY9ZoEmAiGYRxusdEaqtFa9pr
+        bootstrapPeers:
+          type: array
+          description: cluster peers to connect to at startup
+          items:
+            type: string
+            description: cluster peer multiaddress
+            example: /dns4/your-cluster-peer/tcp/9096/ipfs/QmcQ5XvrSQ4DouNkQyQtEoLczbMr6D9bSenGy6WQUCQUBt
+
+    UpdateIPFSClusterPeer:
+      description: IPFS cluster peer
+      type: object
+      properties:
+        peerEndpoint:
+          type: string
+          description: ipfs peer HTTP API endpoint
+          example: /dns4/my-ipfs-peer/tcp/5001
+        bootstrapPeers:
+          type: array
+          description: cluster peers to connect to at startup
+          items:
+            type: string
+            description: cluster peer multiaddress
+            example: /dns4/your-cluster-peer/tcp/9096/ipfs/QmcQ5XvrSQ4DouNkQyQtEoLczbMr6D9bSenGy6WQUCQUBt
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
+
     Ethereum2BeaconNode:
       description: Ethereum 2.0 beacon node
       type: object
