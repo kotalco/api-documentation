@@ -263,6 +263,128 @@ paths:
         404:
           description: Peer by name {peerName} is not found
 
+  /ipfs/clusterpeers:
+    post:
+      tags:
+        - IPFS
+      summary: Create IPFS cluster peer
+      operationId: createIPFSClusterPeer
+      description: create IPFS cluster peer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIPFSClusterPeer"
+      responses:
+        201:
+          description: cluster peer has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusterpeer:
+                    type: object
+                    $ref: "#/components/schemas/IPFSClusterPeer"
+
+    get:
+      tags:
+        - IPFS
+      summary: List all IPFS cluster peers
+      operationId: listIPFSClusterPeers
+      description: list all IPFS cluster peers
+      responses:
+        200:
+          description: all IPFS cluster peers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusterpeers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/IPFSClusterPeer"
+
+  /ipfs/clusterpeers/{peerName}:
+    get:
+      tags:
+        - IPFS
+      summary: Get IPFS cluster peer by name
+      operationId: getIPFSClusterPeer
+      description: get IPFS cluster peer by name
+      parameters:
+        - name: peerName
+          description: cluster peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: IPFS cluster peer by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusterpeer:
+                    $ref: "#/components/schemas/IPFSClusterPeer"
+        404:
+          description: cluster peer by name {peerName} is not found
+
+    delete:
+      tags:
+        - IPFS
+      summary: Delete IPFS cluster peer by name
+      operationId: deleteIPFSClusterPeer
+      description: Delete IPFS cluster peer by a given name
+      parameters:
+        - name: peerName
+          description: cluster peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: cluster peer by name has been deleted
+        404:
+          description: cluster peer by name {peerName} is not found
+
+    put:
+      tags:
+        - IPFS
+      summary: Update IPFS cluster peer by name
+      operationId: updateIPFSClusterPeer
+      description: Update IPFS cluster peer mutable fields by a given name
+      parameters:
+        - name: peerName
+          description: cluster peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateIPFSClusterPeer"
+      responses:
+        200:
+          description: cluster peer has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusterpeer:
+                    $ref: "#/components/schemas/IPFSClusterPeer"
+        404:
+          description: cluster peer by name {peerName} is not found
+
   /ethereum2/beaconnodes:
     post:
       tags:
