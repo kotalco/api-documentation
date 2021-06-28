@@ -625,11 +625,107 @@ paths:
         404:
           description: Validator by name {validatorName} is not found
 
+  /core/secrets:
+    post:
+      tags:
+        - Kubernetes
+      summary: Create Secret
+      operationId: CreateKubernetesSecret
+      description: create kubernetes secret
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateKubernetesSecret"
+      responses:
+        201:
+          description: secret has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  secret:
+                    type: object
+                    $ref: "#/components/schemas/KubernetesSecret"
+
+    get:
+      tags:
+        - Kubernetes
+      summary: List all Secrets
+      operationId: ListKubernetesSecrets
+      description: List all Kubernetes secrets
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+            description: type of the secret
+      responses:
+        200:
+          description: all Kubernetes secrets
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  secrets:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/KubernetesSecret"
+
+  /core/secrets/{secretName}:
+    get:
+      tags:
+        - Kubernetes
+      summary: Get secret by name
+      operationId: getKubernetesSecret
+      description: get kubernetes secret by name
+      parameters:
+        - name: secretName
+          description: secret name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: secret by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  secret:
+                    $ref: "#/components/schemas/KubernetesSecret"
+        404:
+          description: secret by name {secretName} is not found
+    delete:
+      tags:
+        - Kubernetes
+      summary: Delete secret by name
+      operationId: deleteKubernetesSecret
+      description: Delete Kubernetes secret by a given name
+      parameters:
+        - name: secretName
+          description: secret name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: secret by name has been deleted
+        404:
+          description: secret by name {secretName} is not found
+
 tags:
   - name: Ethereum
   - name: Ethereum 2.0
   - name: Filecoin
   - name: IPFS
+  - name: Kubernetes
 
 components:
   schemas:
@@ -1357,3 +1453,42 @@ components:
           example: "1Ti"
           default: "200Gi"
           description: Disk space required
+
+    CreateKubernetesSecret:
+      description: Create Kubernetes Secret
+      type: object
+      properties:
+        name:
+          type: string
+          example: "my-secret"
+          description: secret name
+        type:
+          type: string
+          example: keystore
+          description: secret type
+          enum:
+            - keystore
+            - password
+            - privatekey
+            - generic
+        data:
+          type: object
+          description: secret data
+
+    KubernetesSecret:
+      description: Kubernetes Secret
+      type: object
+      properties:
+        name:
+          type: string
+          example: "my-secret"
+          description: secret name
+        type:
+          type: string
+          example: keystore
+          description: secret type
+          enum:
+            - keystore
+            - password
+            - privatekey
+            - generic
