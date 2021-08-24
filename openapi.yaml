@@ -751,6 +751,172 @@ components:
             - geth
             - parity
             - nethermind
+        p2pPort:
+          description: p2p communication and discovery port
+          type: integer
+          default: 30303
+          example: 4444
+        syncMode:
+          description: Blockchain synchronization mode
+          type: string
+          default: fast
+          example: full
+          enum:
+            - fast
+            - full
+            - light
+        staticNodes:
+          description: trusted nodes to maintain connection to
+          type: array
+          items:
+            description: Ethereum node URL
+            type: string
+        bootnodes:
+          description: ethereum nodes that help bootstrap the network
+          type: array
+          items:
+            description: Ethereum node URL
+            type: string
+        miner:
+          description: Node is mining
+          type: string
+          default: false
+          example: true
+        coinbase:
+          description: Miner ethereum address
+          type: string
+          example: "0x5dfA5dB515748f3E2BCc8677A9332f4aFFad5A5E"
+        rpc:
+          description: Enable JSON-RPC HTTP server
+          type: boolean
+          default: false
+          example: true
+        rpcPort:
+          description: JSON-RPC HTTP server port
+          type: integer
+          default: 8545
+          example: 55555
+        rpcAPI:
+          description: JSON-RPC HTTP server modules to enable
+          type: array
+          default:
+            - eth
+            - net
+            - web3
+          example:
+            - eth
+          items:
+            description: JSON-RPC module
+            example: web3
+            type: string
+            enum:
+              - admin
+              - clique
+              - debug
+              - eea
+              - eth
+              - ibft
+              - net
+              - miner
+              - perm
+              - privacy
+              - plugins
+              - txpool
+              - web3
+        ws:
+          description: Enable JSON-RPC web socket server
+          type: boolean
+          default: false
+          example: true
+        wsPort:
+          description: JSON-RPC web socket server port
+          type: integer
+          default: 8546
+          example: 8888
+        wsAPI:
+          description: JSON-RPC web socket server modules to enable
+          type: array
+          default:
+            - eth
+            - net
+            - web3
+          example:
+            - eth
+          items:
+            description: JSON-RPC module
+            example: web3
+            type: string
+            enum:
+              - admin
+              - clique
+              - debug
+              - eea
+              - eth
+              - ibft
+              - net
+              - miner
+              - perm
+              - privacy
+              - plugins
+              - txpool
+              - web3
+        graphql:
+          description: Enable GraphQL server
+          type: boolean
+          default: false
+          example: true
+        graphqlPort:
+          description: GraphQL server port
+          type: integer
+          default: 8547
+          example: 666666
+        hosts:
+          description: Whitelisted hosts to accept api calls from
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: whitelisted domain
+            type: string
+        corsDomains:
+          description: accept requests from pages loaded from these domains
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: cors domain
+            type: string
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
 
     CreateEthereumNode:
       description: Ethereum 1 Node
@@ -782,6 +948,173 @@ components:
     UpdateEthereumNode:
       description: Mutable Ethereum 1 Node fields
       type: object
+      properties:
+        p2pPort:
+          description: p2p communication and discovery port
+          type: integer
+          default: 30303
+          example: 4444
+        syncMode:
+          description: Blockchain synchronization mode
+          type: string
+          default: fast
+          example: full
+          enum:
+            - fast
+            - full
+            - light
+        staticNodes:
+          description: trusted nodes to maintain connection to
+          type: array
+          items:
+            description: Ethereum node URL
+            type: string
+        bootnodes:
+          description: ethereum nodes that help bootstrap the network
+          type: array
+          items:
+            description: Ethereum node URL
+            type: string
+        miner:
+          description: Node is mining
+          type: string
+          default: false
+          example: true
+        coinbase:
+          description: Miner ethereum address
+          type: string
+          example: "0x5dfA5dB515748f3E2BCc8677A9332f4aFFad5A5E"
+        rpc:
+          description: Enable JSON-RPC HTTP server
+          type: boolean
+          default: false
+          example: true
+        rpcPort:
+          description: JSON-RPC HTTP server port
+          type: integer
+          default: 8545
+          example: 55555
+        rpcAPI:
+          description: JSON-RPC HTTP server modules to enable
+          type: array
+          default:
+            - eth
+            - net
+            - web3
+          example:
+            - eth
+          items:
+            description: JSON-RPC module
+            example: web3
+            type: string
+            enum:
+              - admin
+              - clique
+              - debug
+              - eea
+              - eth
+              - ibft
+              - net
+              - miner
+              - perm
+              - privacy
+              - plugins
+              - txpool
+              - web3
+        ws:
+          description: Enable JSON-RPC web socket server
+          type: boolean
+          default: false
+          example: true
+        wsPort:
+          description: JSON-RPC web socket server port
+          type: integer
+          default: 8546
+          example: 8888
+        wsAPI:
+          description: JSON-RPC web socket server modules to enable
+          type: array
+          default:
+            - eth
+            - net
+            - web3
+          example:
+            - eth
+          items:
+            description: JSON-RPC module
+            example: web3
+            type: string
+            enum:
+              - admin
+              - clique
+              - debug
+              - eea
+              - eth
+              - ibft
+              - net
+              - miner
+              - perm
+              - privacy
+              - plugins
+              - txpool
+              - web3
+        graphql:
+          description: Enable GraphQL server
+          type: boolean
+          default: false
+          example: true
+        graphqlPort:
+          description: GraphQL server port
+          type: integer
+          default: 8547
+          example: 666666
+        hosts:
+          description: Whitelisted hosts to accept api calls from
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: whitelisted domain
+            type: string
+        corsDomains:
+          description: accept requests from pages loaded from these domains
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: cors domain
+            type: string
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
 
     IPFSPeer:
       description: IPFS peer
