@@ -756,6 +756,10 @@ components:
           type: string
           default: info
           example: debug
+        nodePrivateKeySecretName:
+          description: name of the kubernetes secret holding node private key
+          type: string
+          example: my-node-private-key
         p2pPort:
           description: p2p communication and discovery port
           type: integer
@@ -949,6 +953,10 @@ components:
             - geth
             - parity
             - nethermind
+        nodePrivateKeySecretName:
+          description: name of the kubernetes secret holding node private key
+          type: string
+          example: my-node-private-key
 
     UpdateEthereumNode:
       description: Mutable Ethereum 1 Node fields
@@ -959,6 +967,10 @@ components:
           type: string
           default: info
           example: debug
+        nodePrivateKeySecretName:
+          description: name of the kubernetes secret holding node private key
+          type: string
+          example: my-node-private-key
         p2pPort:
           description: p2p communication and discovery port
           type: integer
