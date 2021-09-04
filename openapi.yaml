@@ -795,6 +795,16 @@ components:
           description: Miner ethereum address
           type: string
           example: "0x5dfA5dB515748f3E2BCc8677A9332f4aFFad5A5E"
+        import:
+          description: Ethereum account to import
+          type: object
+          properties:
+            privateKeySecretName:
+              type: string
+              example: my-account-private-key
+            passwordSecretName:
+              type: string
+              example: my-account-password
         rpc:
           description: Enable JSON-RPC HTTP server
           type: boolean
@@ -1006,6 +1016,16 @@ components:
           description: Miner ethereum address
           type: string
           example: "0x5dfA5dB515748f3E2BCc8677A9332f4aFFad5A5E"
+        import:
+          description: Ethereum account to import
+          type: object
+          properties:
+            privateKeySecretName:
+              type: string
+              example: my-account-private-key
+            passwordSecretName:
+              type: string
+              example: my-account-password
         rpc:
           description: Enable JSON-RPC HTTP server
           type: boolean
