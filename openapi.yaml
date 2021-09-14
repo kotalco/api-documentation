@@ -52,7 +52,20 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/EthereumNode"
-
+    head:
+      tags:
+        - Ethereum
+      summary: Get number of nodes
+      operationId: countEthereumNodes
+      description: count ethereum nodes
+      responses:
+        200:
+          description: ethereum nodes count
+          headers:
+            X-Total-Count:
+              description: number of ethereum nodes
+              schema:
+                type: number
   /ethereum/nodes/{nodeName}:
     get:
       tags:
@@ -178,6 +191,21 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/IPFSPeer"
+
+    head:
+      tags:
+        - IPFS
+      summary: Get number of IPFS peers
+      operationId: countIPFSPeers
+      description: count IPFS peers
+      responses:
+        200:
+          description: IPFS peers count
+          headers:
+            X-Total-Count:
+              description: number of IPFS peers
+              schema:
+                type: number
 
   /ipfs/peers/{peerName}:
     get:
@@ -307,6 +335,21 @@ paths:
                     items:
                       $ref: "#/components/schemas/IPFSClusterPeer"
 
+    head:
+      tags:
+        - IPFS
+      summary: Count IPFS cluster Peers
+      operationId: countIPFSClusterPeers
+      description: count IPFS cluster peers
+      responses:
+        200:
+          description: IPFS cluster peers count
+          headers:
+            X-Total-Count:
+              description: number of IPFS cluster peers
+              schema:
+                type: number
+
   /ipfs/clusterpeers/{peerName}:
     get:
       tags:
@@ -429,6 +472,21 @@ paths:
                     items:
                       $ref: "#/components/schemas/Ethereum2BeaconNode"
 
+    head:
+      tags:
+        - Ethereum 2.0
+      summary: Count Ethereum 2.0 beacon nodes
+      operationId: countEthereum2BeaconNodes
+      description: count Ethereum 2.0 beacon nodes
+      responses:
+        200:
+          description: Ethereum 2.0 beacon nodes count
+          headers:
+            X-Total-Count:
+              description: number of Ethereum 2.0 beacon nodes
+              schema:
+                type: number
+
   /ethereum2/beaconnodes/{nodeName}:
     get:
       tags:
@@ -548,6 +606,21 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Ethereum2Validator"
+
+    head:
+      tags:
+        - Ethereum 2.0
+      summary: Count Ethereum 2.0 Validators
+      operationId: countEthereum2Validators
+      description: count Ethereum 2.0 validators
+      responses:
+        200:
+          description: Ethereum 2.0 validators count
+          headers:
+            X-Total-Count:
+              description: number of Ethereum 2.0 validators
+              schema:
+                type: number
 
   /ethereum2/validators/{validatorName}:
     get:
@@ -674,6 +747,21 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/KubernetesSecret"
+
+    head:
+      tags:
+        - Kubernetes
+      summary: Get number of Kubernetes Secrets
+      operationId: countKubernetesSecrets
+      description: count Kubernetes secrets
+      responses:
+        200:
+          description: Kubernetes secrets count
+          headers:
+            X-Total-Count:
+              description: number of Kubernetes secrets
+              schema:
+                type: number
 
   /core/secrets/{secretName}:
     get:
