@@ -756,6 +756,15 @@ components:
           type: string
           default: info
           example: debug
+          enum:
+            - all
+            - debug
+            - error
+            - fatal
+            - info
+            - off
+            - trace
+            - warn
         nodePrivateKeySecretName:
           description: name of the kubernetes secret holding node private key
           type: string
@@ -977,6 +986,15 @@ components:
           type: string
           default: info
           example: debug
+          enum:
+            - all
+            - debug
+            - error
+            - fatal
+            - info
+            - off
+            - trace
+            - warn
         nodePrivateKeySecretName:
           description: name of the kubernetes secret holding node private key
           type: string
