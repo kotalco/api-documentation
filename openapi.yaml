@@ -1200,6 +1200,31 @@ components:
             - default-datastore
           items:
             $ref: "#/components/schemas/IPFSConfigurationProfile"
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
 
     CreateIPFSPeer:
       description: IPFS peer
@@ -1250,6 +1275,31 @@ components:
           description: configuration profiles
           items:
             $ref: "#/components/schemas/IPFSConfigurationProfile"
+        cpu:
+          type: string
+          example: "2"
+          default: "1"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "2"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
 
     IPFSRouting:
       type: string
