@@ -292,6 +292,149 @@ paths:
         404:
           description: Peer by name {peerName} is not found
 
+  /chainlink/nodes:
+    post:
+      tags:
+        - Chainlink
+      summary: Create Chainlink node
+      operationId: createChainlinkNode
+      description: create Chainlink node
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChainlinkNode"
+      responses:
+        201:
+          description: node has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    $ref: "#/components/schemas/ChainlinkNode"
+
+    get:
+      tags:
+        - Chainlink
+      summary: List all Chainlink nodes
+      operationId: listChainlinkNodes
+      description: list all Chainlink nodes
+      responses:
+        200:
+          description: all Chainlink nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ChainlinkNode"
+
+    head:
+      tags:
+        - Chainlink
+      summary: Get number of Chainlink nodes
+      operationId: countChainlinkNodes
+      description: count Chainlink nodes
+      responses:
+        200:
+          description: Chainlink nodes count
+          headers:
+            X-Total-Count:
+              description: number of Chainlink nodes
+              schema:
+                type: number
+
+  /chainlink/nodes/{nodeName}:
+    get:
+      tags:
+        - Chainlink
+      summary: Get Chainlink node by name
+      operationId: getChainlinkNode
+      description: get Chainlink node by name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Chainlink node by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/ChainlinkNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+
+    delete:
+      tags:
+        - Chainlink
+      summary: Delete Chainlink node by name
+      operationId: deleteChainlinkNode
+      description: Delete Chainlink node by a given name
+      parameters:
+        - name: nodeName
+          description: chainlink node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Node by name has been deleted
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+
+    put:
+      tags:
+        - Chainlink
+      summary: Update Chainlink node by name
+      operationId: updateChainlinkNode
+      description: Update Chainlink node mutable fields by a given name
+      parameters:
+        - name: nodeName
+          description: Peer name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChainlinkNode"
+      responses:
+        200:
+          description: Node has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/ChainlinkNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: node by name {nodeName} is not found
+
   /ipfs/clusterpeers:
     post:
       tags:
