@@ -66,6 +66,7 @@ paths:
               description: number of ethereum nodes
               schema:
                 type: number
+
   /ethereum/nodes/{nodeName}:
     get:
       tags:
@@ -809,6 +810,7 @@ paths:
           description: secret by name {secretName} is not found
 
 tags:
+  - name: Chainlink
   - name: Ethereum
   - name: Ethereum 2.0
   - name: Filecoin
@@ -817,6 +819,248 @@ tags:
 
 components:
   schemas:
+    ChainlinkAPICredentials:
+      description: Chainlink API credentials
+      type: object
+      properties:
+        email:
+          description: Email address
+          type: string
+          example: mostafa@kotal.co
+        passwordSecretName:
+          description: Kubernetes secret name holding password
+          type: string
+          example: api-credentials-password
+
+    ChainlinkNode:
+      description: Chainlink Node
+      type: object
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: Chainlink node name
+        ethereumChainId:
+          type: string
+          example: 4
+          description: Ethereum chain ID
+        ethereumWsEndpoint:
+          description: Ethereum node websocket endpoint
+          type: string
+          example: ws://my-eth-node:8546
+        linkContractAddress:
+          description: LINK contract address
+          type: string
+          example: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709"
+        databaseURL:
+          description: Postgres database connection URL
+          type: string
+          example: postgres://username:password@server:port/database
+        keystorePasswordSecretName:
+          description: Kubernetes secret name holding keystore password
+          type: string
+          example: my-keystore-password
+        apiCredentials:
+          $ref: "#/components/schemas/ChainlinkAPICredentials"
+        corsDomains:
+          description: Domains to accept from which cross domain requests
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: Domain name
+            type: string
+        certSecretName:
+          description: Kubernetes secret name holding tls certificate
+          type: string
+          example: my-certificate
+        tlsPort:
+          description: Port used for HTTPS connections
+          type: number
+          default: 6689
+          example: 9999
+        secureCookies:
+          description: Enable secure cookies for authentication
+          type: boolean
+          default: false
+          example: true
+        logging:
+          description: logging verbosity level
+          type: string
+          default: info
+          example: debug
+          enum:
+            - debug
+            - info
+            - warn
+            - error
+            - panic
+        ethereumHttpEndpoints:
+          description: Ethereum node HTTP endpoints
+          type: array
+          items:
+            description: Ethereum node HTTP endpoint
+            type: string
+          example:
+            - http://my-eth-node:8545
+            - http://my-eth-node2:8545
+        cpu:
+          type: string
+          example: "1"
+          default: "2"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "2"
+          default: "4"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "10Gi"
+          default: "20Gi"
+          description: Disk space required
+
+    CreateChainlinkNode:
+      description: Create Chainlink Node
+      type: object
+      required:
+        - name
+        - ethereumChainId
+        - linkContractAddress
+        - ethereumWsEndpoint
+        - databaseURL
+        - keystorePasswordSecretName
+        - apiCredentials
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: Chainlink node name
+        ethereumChainId:
+          type: string
+          example: 4
+          description: Ethereum chain ID
+        ethereumWsEndpoint:
+          description: Ethereum node websocket endpoint
+          type: string
+          example: ws://my-eth-node:8546
+        linkContractAddress:
+          description: LINK contract address
+          type: string
+          example: "0x01BE23585060835E02B77ef475b0Cc51aA1e0709"
+        databaseURL:
+          description: Postgres database connection URL
+          type: string
+          example: postgres://username:password@server:port/database
+        keystorePasswordSecretName:
+          description: Kubernetes secret name holding keystore password
+          type: string
+          example: my-keystore-password
+        apiCredentials:
+          $ref: "#/components/schemas/ChainlinkAPICredentials"
+
+    UpdateChainlinkNode:
+      description: Update Chainlink Node
+      type: object
+      properties:
+        ethereumWsEndpoint:
+          description: Ethereum node websocket endpoint
+          type: string
+          example: ws://my-eth-node:8546
+        databaseURL:
+          description: Postgres database connection URL
+          type: string
+          example: postgres://username:password@server:port/database
+        keystorePasswordSecretName:
+          description: Kubernetes secret name holding keystore password
+          type: string
+          example: my-keystore-password
+        apiCredentials:
+          $ref: "#/components/schemas/ChainlinkAPICredentials"
+        corsDomains:
+          description: Domains to accept from which cross domain requests
+          type: array
+          default:
+            - "*"
+          example:
+            - my.domain.com
+            - your.domain.com
+          items:
+            description: Domain name
+            type: string
+        certSecretName:
+          description: Kubernetes secret name holding tls certificate
+          type: string
+          example: my-certificate
+        tlsPort:
+          description: Port used for HTTPS connections
+          type: number
+          default: 6689
+          example: 9999
+        secureCookies:
+          description: Enable secure cookies for authentication
+          type: boolean
+          default: false
+          example: true
+        logging:
+          description: logging verbosity level
+          type: string
+          default: info
+          example: debug
+          enum:
+            - debug
+            - info
+            - warn
+            - error
+            - panic
+        ethereumHttpEndpoints:
+          description: Ethereum node HTTP endpoints
+          type: array
+          items:
+            description: Ethereum node HTTP endpoint
+            type: string
+          example:
+            - http://my-eth-node:8545
+            - http://my-eth-node2:8545
+        cpu:
+          type: string
+          example: "1"
+          default: "2"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "2"
+          default: "4"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "2Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "4Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "10Gi"
+          default: "20Gi"
+          description: Disk space required
+
     EthereumNode:
       description: Ethereum 1 Node
       type: object
