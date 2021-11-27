@@ -952,6 +952,149 @@ paths:
         404:
           description: secret by name {secretName} is not found
 
+  /polkadot/nodes:
+    post:
+      tags:
+        - Polkadot
+      summary: Create Polkadot node
+      operationId: createPolkadotNode
+      description: create Polkadot node
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePolkadotNode"
+      responses:
+        201:
+          description: node has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    $ref: "#/components/schemas/PolkadotNode"
+
+    get:
+      tags:
+        - Polkadot
+      summary: List all Polkadot nodes
+      operationId: listPolkadotNodes
+      description: list all Polkadot nodes
+      responses:
+        200:
+          description: all Polkadot nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PolkadotNode"
+
+    head:
+      tags:
+        - Polkadot
+      summary: Get number of Polkadot nodes
+      operationId: countPolkadotNodes
+      description: count Polkadot nodes
+      responses:
+        200:
+          description: Polkadot nodes count
+          headers:
+            X-Total-Count:
+              description: number of Polkadot nodes
+              schema:
+                type: number
+
+  /polkadot/nodes/{nodeName}:
+    get:
+      tags:
+        - Polkadot
+      summary: Get Polkadot node by name
+      operationId: getPolkadotNode
+      description: get Polkadot node by name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Polkadot node by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/PolkadotNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+
+    delete:
+      tags:
+        - Polkadot
+      summary: Delete Polkadot node by name
+      operationId: deletePolkadotNode
+      description: Delete Polkadot node by a given name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: node by name has been deleted
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: node by name {nodeName} is not found
+
+    put:
+      tags:
+        - Polkadot
+      summary: Update Polkadot node by name
+      operationId: updatePolkadotNode
+      description: Update Polkadot node mutable fields by a given name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePolkadotNode"
+      responses:
+        200:
+          description: node has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/PolkadotNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: node by name {nodeName} is not found
+
 tags:
   - name: Chainlink
   - name: Ethereum
@@ -959,6 +1102,7 @@ tags:
   - name: Filecoin
   - name: IPFS
   - name: Kubernetes
+  - name: Polkadot
 
 components:
   schemas:
@@ -2410,3 +2554,277 @@ components:
             - password
             - privatekey
             - generic
+
+    PolkadotNode:
+      description: Polkadot node
+      type: object
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: Polkadot node name
+        network:
+          type: string
+          example: kusama
+          enum:
+            - polkadot
+            - kusama
+            - rococo
+            - westend
+          description: Polkadot chain name
+        p2pPort:
+          type: number
+          example: 40444
+          default: 30333
+          description: p2p protocol tcp port
+        nodePrivateKeySecretName:
+          type: string
+          example: "my-node-key"
+          description: Secret name holding node Ed25519 private key
+        validator:
+          type: boolean
+          example: true
+          default: false
+          description: Enables validator mode
+        syncMode:
+          type: string
+          enum:
+            - fast
+            - full
+          example: full
+          default: fast
+          description: Blockchain synchronization mode
+        pruning:
+          type: boolean
+          example: true
+          description: Keep recent or all blocks
+        retainedBlocks:
+          type: number
+          example: 1024
+          default: 256
+          description: Number of blocks to keep state for
+        logging:
+          type: string
+          example: warn
+          default: info
+          enum:
+            - error
+            - warn
+            - info
+            - debug
+            - trace
+          description: Logging verboisty level
+        telemetry:
+          type: boolean
+          example: true
+          default: false
+          description: Enables connecting to telemetry server
+        telemetryURL:
+          type: string
+          example: "wss://telemetry.kotal.io/submit/ 0"
+          default: "wss://telemetry.polkadot.io/submit/ 0"
+          description: Telemetry service URL
+        prometheus:
+          type: boolean
+          example: true
+          default: false
+          description: Exposes a prometheus exporter endpoint
+        prometheusPort:
+          type: number
+          example: 9616
+          default: 9615
+          description: Prometheus exporter port
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enables JSON-RPC server
+        rpcPort:
+          type: number
+          example: 9922
+          default: 9933
+          description: JSON-RPC server port
+        ws:
+          type: boolean
+          example: true
+          default: false
+          description: Enables WebSocket server
+        wsPort:
+          type: number
+          example: 9955
+          default: 9944
+          description: WebSocket server port
+        corsDomains:
+          type: array
+          default:
+            - "*"
+          example:
+            - kotal.co
+            - kotal.network
+          description: Origins allowed to access the JSON-RPC HTTP and WS servers
+        cpu:
+          type: string
+          example: "2"
+          default: "4"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "8"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "4Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "8Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "80Gi"
+          description: Disk space required
+
+    CreatePolkadotNode:
+      description: Polkadot node
+      type: object
+      required:
+        - name
+        - network
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: Polkadot node name
+        network:
+          type: string
+          example: kusama
+          enum:
+            - polkadot
+            - kusama
+            - rococo
+            - westend
+          description: Polkadot chain name
+
+    UpdatePolkadotNode:
+      description: Polkadot node
+      type: object
+      properties:
+        p2pPort:
+          type: number
+          example: 40444
+          default: 30333
+          description: p2p protocol tcp port
+        nodePrivateKeySecretName:
+          type: string
+          example: "my-node-key"
+          description: Secret name holding node Ed25519 private key
+        validator:
+          type: boolean
+          example: true
+          default: false
+          description: Enables validator mode
+        syncMode:
+          type: string
+          enum:
+            - fast
+            - full
+          example: full
+          default: fast
+          description: Blockchain synchronization mode
+        pruning:
+          type: boolean
+          example: true
+          description: Keep recent or all blocks
+        retainedBlocks:
+          type: number
+          example: 1024
+          default: 256
+          description: Number of blocks to keep state for
+        logging:
+          type: string
+          example: warn
+          default: info
+          enum:
+            - error
+            - warn
+            - info
+            - debug
+            - trace
+          description: Logging verboisty level
+        telemetry:
+          type: boolean
+          example: true
+          default: false
+          description: Enables connecting to telemetry server
+        telemetryURL:
+          type: string
+          example: "wss://telemetry.kotal.io/submit/ 0"
+          default: "wss://telemetry.polkadot.io/submit/ 0"
+          description: Telemetry service URL
+        prometheus:
+          type: boolean
+          example: true
+          default: false
+          description: Exposes a prometheus exporter endpoint
+        prometheusPort:
+          type: number
+          example: 9616
+          default: 9615
+          description: Prometheus exporter port
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enables JSON-RPC server
+        rpcPort:
+          type: number
+          example: 9922
+          default: 9933
+          description: JSON-RPC server port
+        ws:
+          type: boolean
+          example: true
+          default: false
+          description: Enables WebSocket server
+        wsPort:
+          type: number
+          example: 9955
+          default: 9944
+          description: WebSocket server port
+        corsDomains:
+          type: array
+          default:
+            - "*"
+          example:
+            - kotal.co
+            - kotal.network
+          description: Origins allowed to access the JSON-RPC HTTP and WS servers
+        cpu:
+          type: string
+          example: "2"
+          default: "4"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "4"
+          default: "8"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "4Gi"
+          default: "4Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "8Gi"
+          default: "8Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "80Gi"
+          description: Disk space required
