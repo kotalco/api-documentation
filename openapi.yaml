@@ -7,7 +7,7 @@ info:
     name: Mostafa Farghaly
     email: mostafa@kotal.co
 servers:
-  - url: http://localhost:3000/v1/
+  - url: http://localhost:3000/api/v1/
     description: Localhost
 paths:
   /ethereum/nodes:
