@@ -1095,6 +1095,149 @@ paths:
         404:
           description: secret by name {secretName} is not found
 
+  /near/nodes:
+    post:
+      tags:
+        - NEAR
+      summary: Create NEAR node
+      operationId: createNEARNode
+      description: create NEAR node
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNEARNode"
+      responses:
+        201:
+          description: node has been created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    type: object
+                    $ref: "#/components/schemas/NEARNode"
+
+    get:
+      tags:
+        - NEAR
+      summary: List all NEAR nodes
+      operationId: listNEARNodes
+      description: list all NEAR nodes
+      responses:
+        200:
+          description: all NEAR nodes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NEARNode"
+
+    head:
+      tags:
+        - NEAR
+      summary: Get number of NEAR nodes
+      operationId: countNEARNodes
+      description: count NEAR nodes
+      responses:
+        200:
+          description: NEAR nodes count
+          headers:
+            X-Total-Count:
+              description: number of NEAR nodes
+              schema:
+                type: number
+
+  /near/nodes/{nodeName}:
+    get:
+      tags:
+        - NEAR
+      summary: Get NEAR node by name
+      operationId: getNEARNode
+      description: get NEAR node by name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: NEAR node by the given name
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/NEARNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: Node by name {nodeName} is not found
+
+    delete:
+      tags:
+        - NEAR
+      summary: Delete NEAR node by name
+      operationId: deleteNEARNode
+      description: Delete NEAR node by a given name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: node by name has been deleted
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: node by name {nodeName} is not found
+
+    put:
+      tags:
+        - NEAR
+      summary: Update NEAR node by name
+      operationId: updateNEARNode
+      description: Update NEAR node mutable fields by a given name
+      parameters:
+        - name: nodeName
+          description: node name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateNEARNode"
+      responses:
+        200:
+          description: node has been updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  node:
+                    $ref: "#/components/schemas/NEARNode"
+        400:
+          description: path parameter {nodeName} is missing
+        404:
+          description: node by name {nodeName} is not found
+
   /polkadot/nodes:
     post:
       tags:
@@ -1245,6 +1388,7 @@ tags:
   - name: Filecoin
   - name: IPFS
   - name: Kubernetes
+  - name: NEAR
   - name: Polkadot
 
 components:
@@ -2432,6 +2576,231 @@ components:
           default: false
           example: true
           description: ipfs online mode
+        cpu:
+          type: string
+          example: "4"
+          default: "8"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "8"
+          default: "16"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "8Gi"
+          default: "16Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "16Gi"
+          default: "32Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
+
+    NEARNode:
+      description: NEAR Node
+      type: object
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: NEAR node name
+        network:
+          type: string
+          example: mainnet
+          description: NEAR network name
+          enum:
+            - mainnet
+            - testnet
+            - betanet
+        nodePrivateKeySecretName:
+          type: string
+          example: my-node-key
+          description: k8s secret name holding node Ed25519 private key
+        minPeers:
+          type: number
+          example: 9
+          default: 5
+          description: minimum number of peers to start syncing/producing blocks
+        p2pPort:
+          type: number
+          example: 5555
+          default: 4444
+          description: p2p port
+        p2pHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: p2p host
+        archive:
+          type: boolean
+          example: true
+          default: false
+          description: Keeps old blocks in the storage
+        validatorSecretName:
+          type: string
+          example: my-validator-key
+          description: k8s secret name holding Ed25519 validator key
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable JSON-RPC server
+        rpcPort:
+          type: number
+          example: 4321
+          default: 3030
+          description: JSON-RPC server port
+        rpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: JSON-RPC server host
+        prometheusPort:
+          type: number
+          example: 24568
+          default: 24567
+          description: Prometheus exporter port
+        prometheusHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: Prometheus exporter host
+        telemetryURL:
+          type: string
+          example: "https://explorer.mainnet.near.org/api/nodes"
+          description: telemetry service URL
+        bootnodes:
+          type: array
+          items:
+            type: string
+            description: boot node
+          description: Boot nodes to bootstrap network from
+          example:
+            - "ed25519:86EtEy7epneKyrcJwSWP7zsisTkfDRH5CFVszt4qiQYw@35.195.32.249:24567"
+            - "ed25519:BFB78VTDBBfCY4jCP99zWxhXUcFAZqR22oSx2KEr8UM1@35.229.222.235:24567"
+        cpu:
+          type: string
+          example: "4"
+          default: "8"
+          description: Number of CPU core required
+        cpuLimit:
+          type: string
+          example: "8"
+          default: "16"
+          description: Max number of CPU cores
+        memory:
+          type: string
+          example: "8Gi"
+          default: "16Gi"
+          description: Memory required
+        memoryLimit:
+          type: string
+          example: "16Gi"
+          default: "32Gi"
+          description: Max memory
+        storage:
+          type: string
+          example: "200Gi"
+          default: "10Gi"
+          description: Disk space required
+
+    CreateNEARNode:
+      description: NEAR Node
+      type: object
+      required:
+        - name
+        - network
+        - archive
+      properties:
+        name:
+          type: string
+          example: my-node
+          description: NEAR node name
+        network:
+          type: string
+          example: mainnet
+          description: NEAR network name
+          enum:
+            - mainnet
+            - testnet
+            - betanet
+        archive:
+          type: boolean
+          example: true
+          default: false
+          description: Keeps old blocks in the storage
+
+    UpdateNEARNode:
+      description: NEAR Node
+      type: object
+      properties:
+        nodePrivateKeySecretName:
+          type: string
+          example: my-node-key
+          description: k8s secret name holding node Ed25519 private key
+        minPeers:
+          type: number
+          example: 9
+          default: 5
+          description: minimum number of peers to start syncing/producing blocks
+        p2pPort:
+          type: number
+          example: 5555
+          default: 4444
+          description: p2p port
+        p2pHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: p2p host
+        validatorSecretName:
+          type: string
+          example: my-validator-key
+          description: k8s secret name holding Ed25519 validator key
+        rpc:
+          type: boolean
+          example: true
+          default: false
+          description: Enable JSON-RPC server
+        rpcPort:
+          type: number
+          example: 4321
+          default: 3030
+          description: JSON-RPC server port
+        rpcHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: JSON-RPC server host
+        prometheusPort:
+          type: number
+          example: 24568
+          default: 24567
+          description: Prometheus exporter port
+        prometheusHost:
+          type: string
+          example: "127.0.0.1"
+          default: "0.0.0.0"
+          description: Prometheus exporter host
+        telemetryURL:
+          type: string
+          example: "https://explorer.mainnet.near.org/api/nodes"
+          description: telemetry service URL
+        bootnodes:
+          type: array
+          items:
+            type: string
+            description: boot node
+          description: Boot nodes to bootstrap network from
+          example:
+            - "ed25519:86EtEy7epneKyrcJwSWP7zsisTkfDRH5CFVszt4qiQYw@35.195.32.249:24567"
+            - "ed25519:BFB78VTDBBfCY4jCP99zWxhXUcFAZqR22oSx2KEr8UM1@35.229.222.235:24567"
         cpu:
           type: string
           example: "4"
